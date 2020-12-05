@@ -6,6 +6,9 @@ import LoadingBox from "../components/loadingBox";
 import MessageBox from "../components/messageBox";
 
 const RegisterScreen = (props) => {
+
+
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState('');
@@ -15,7 +18,9 @@ const RegisterScreen = (props) => {
 
   const userRegister = useSelector((state) => state.userRegister);
   const { userInfo, loading, error } = userRegister;
-
+  if (!userInfo) {
+    props.history.push("/");
+  }
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
