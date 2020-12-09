@@ -12,6 +12,8 @@ import ShippingAddressScreen from './screens/shippingAddressScreen';
 import PaymentMethodScreen from './screens/paymentMethodScreen';
 import PlaceOrderScreen from './screens/placeOrderScreen';
 import OrderScreen from './screens/orderScreen';
+import OrderHistoryScreen from './screens/orderHistoryScreen';
+import ProfileScreen from './screens/profileScreen';
 
 
 function App() {
@@ -47,8 +49,19 @@ function App() {
                 <Link to="#">
                   {userInfo.name} <i className="fa fa-caret-down"></i>
                 </Link>
-                <ul className='dropdown-content'>
-                  <Link to='#signout' onClick={signoutHandler}>Sign Out</Link>
+                <ul className="dropdown-content">
+                  <li>
+                    <Link to='/profile'>User Profile</Link>
+                  </li>
+                  <li>
+                    <Link to='/orderhistory'>Order History</Link>
+                  </li>
+                  <li>
+                    {" "}
+                    <Link to="#signout" onClick={signoutHandler}>
+                      Sign Out
+                    </Link>
+                  </li>
                 </ul>
               </div>
             ) : (
@@ -61,10 +74,12 @@ function App() {
           <Route path="/product/:id" component={ProductScreen} />
           <Route path="/signin" component={SignInScreen} />
           <Route path="/register" component={RegisterScreen} />
-          <Route path='/shipping' component={ShippingAddressScreen} />
-          <Route path='/payment' component={PaymentMethodScreen} />
-          <Route path='/placeorder' component={PlaceOrderScreen} />
-          <Route path='/order/:id' component={OrderScreen} />
+          <Route path="/shipping" component={ShippingAddressScreen} />
+          <Route path="/payment" component={PaymentMethodScreen} />
+          <Route path="/placeorder" component={PlaceOrderScreen} />
+          <Route path="/order/:id" component={OrderScreen} />
+          <Route path="/orderhistory" component={OrderHistoryScreen} />
+          <Route path="/profile" component={ProfileScreen} />
           <Route path="/" component={HomeScreen} exact />
         </main>
         <footer className="row center">All Rights Reserved.</footer>
