@@ -1,7 +1,11 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import CheckoutSteps from '../components/checkoutSteps';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { createOrder } from "../actions/orderActions";
+import CheckoutSteps from "../components/checkoutSteps";
+import LoadingBox from "../components/loadingBox";
+import MessageBox from "../components/messageBox";
+import { ORDER_CREATE_RESET } from "../constants/orderConstants";
 
 const PlaceOrderScreen = (props) => {
   const cart = useSelector((state) => state.cart);
@@ -13,6 +17,8 @@ const PlaceOrderScreen = (props) => {
   if (!userInfo) {
     props.history.push("/signin");
   }
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { loading, success, error, order } = orderCreate;
   const toPrice = (num) => Number(num.toFixed(2)); // 5.123 => "5.12" => 5.12
 
   cart.itemsPrice = toPrice(
@@ -21,11 +27,17 @@ const PlaceOrderScreen = (props) => {
   cart.shippingPrice = cart.itemsPrice > 100 ? toPrice(0) : toPrice(10);
   cart.taxPrice = toPrice(0.15 * cart.itemsPrice);
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
-
+  const dispatch = useDispatch();
   const placeOrderHandler = (e) => {
-    //TODO: dispatch place order action
-    e.preventDefault();
+    dispatch(createOrder({ ...cart, orderItems: cart.cartItems }));
   };
+
+  useEffect(() => {
+    if (success) {
+      props.history.push(`/order/${order._id}`);
+      dispatch({ type: ORDER_CREATE_RESET });
+    }
+  }, [dispatch, order, props.history, success]);
 
   return (
     <div>
@@ -127,12 +139,18 @@ const PlaceOrderScreen = (props) => {
                   Place Order
                 </button>
               </li>
+              {
+                  loading && <LoadingBox></LoadingBox>
+              }
+              { 
+                  error && <MessageBox variant='danger'>{error}</MessageBox>
+              }
             </ul>
           </div>
         </div>
       </div>
     </div>
   );
-};;
+};
 
 export default PlaceOrderScreen;
