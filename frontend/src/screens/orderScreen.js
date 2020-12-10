@@ -1,4 +1,5 @@
 import Axios from "axios";
+import moment from 'moment';
 import React, { useEffect, useState } from "react";
 import {PayPalButton} from 'react-paypal-button-v2';
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +19,8 @@ const OrderScreen = (props) => {
   const orderPay = useSelector(state=> state.orderPay);
   const {loading: loadingPay, error: errorPay, success: successPay } = orderPay;
   const dispatch = useDispatch();
+
+
 
   useEffect(() => {
     const addPayPalScript = async () => {
@@ -55,7 +58,7 @@ const OrderScreen = (props) => {
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
     <div>
-      <h1>Order {order._id}</h1>
+      <h1>Order #{order._id}</h1>
       <div className="row top">
         <div className="col-2">
           <ul>

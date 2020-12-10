@@ -18,9 +18,6 @@ const RegisterScreen = (props) => {
 
   const userRegister = useSelector((state) => state.userRegister);
   const { userInfo, loading, error } = userRegister;
-  if (!userInfo) {
-    props.history.push("/");
-  }
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
