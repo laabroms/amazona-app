@@ -19,6 +19,8 @@ import AdminRoute from './components/adminRoute';
 import ProductListScreen from './screens/productListScreen';
 import ProductEditScreen from './screens/productEditScreen';
 import OrderListScreen from './screens/orderListScreen';
+import UserListScreen from './screens/userListScreen';
+import UserEditScreen from './screens/userEditScreen';
 
 
 function App() {
@@ -107,6 +109,8 @@ function App() {
           <PrivateRoute path="/profile" component={ProfileScreen} />
           <AdminRoute path='/productlist' component={ProductListScreen} />
           <AdminRoute path='/orderlist' component={OrderListScreen} />
+          <AdminRoute path='/userlist' component={UserListScreen} />
+          <AdminRoute path='/user/:id/edit' component={UserEditScreen} />
           <Route path="/" component={HomeScreen} exact />
         </main>
         <footer className="row center">All Rights Reserved.</footer>
