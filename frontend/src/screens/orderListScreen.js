@@ -6,6 +6,8 @@ import MessageBox from "../components/messageBox";
 import { ORDER_DELETE_RESET } from "../constants/orderConstants";
 
 const OrderListScreen = (props) => {
+  const sellerMode = props.match.path.indexOf("/seller") >= 0;
+
   const orderList = useSelector((state) => state.orderList);
   const { loading, error, orders } = orderList;
   const orderDelete = useSelector((state) => state.orderDelete);
@@ -14,11 +16,13 @@ const OrderListScreen = (props) => {
     error: errorDelete,
     success: successDelete,
   } = orderDelete;
+  const userSignin = useSelector((state) => state.userSignin);
+  const { userInfo } = userSignin;
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(listOrders());
-    dispatch({ type: ORDER_DELETE_RESET })
-  }, [dispatch, successDelete]);
+    dispatch(listOrders({ seller: sellerMode ? userInfo._id : "" }));
+    dispatch({ type: ORDER_DELETE_RESET });
+  }, [dispatch, successDelete, sellerMode, userInfo._id]);
 
   const deleteHandler = (order) => {
     if (window.confirm("Are you sure you want to delete?")) {
@@ -30,7 +34,7 @@ const OrderListScreen = (props) => {
       <div>
         <h1>Orders</h1>
         {loadingDelete && <LoadingBox />}
-        {errorDelete && <MessageBox variant='danger'>{errorDelete}</MessageBox>}
+        {errorDelete && <MessageBox variant="danger">{errorDelete}</MessageBox>}
         {loading ? (
           <LoadingBox />
         ) : error ? (

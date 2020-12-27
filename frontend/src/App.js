@@ -21,6 +21,7 @@ import ProductEditScreen from './screens/productEditScreen';
 import OrderListScreen from './screens/orderListScreen';
 import UserListScreen from './screens/userListScreen';
 import UserEditScreen from './screens/userEditScreen';
+import SellerRoute from './components/sellerRoute';
 
 
 function App() {
@@ -58,10 +59,10 @@ function App() {
                 </Link>
                 <ul className="dropdown-content">
                   <li>
-                    <Link to='/profile'>User Profile</Link>
+                    <Link to="/profile">User Profile</Link>
                   </li>
                   <li>
-                    <Link to='/orderhistory'>Order History</Link>
+                    <Link to="/orderhistory">Order History</Link>
                   </li>
                   <li>
                     {" "}
@@ -74,21 +75,38 @@ function App() {
             ) : (
               <Link to="/signin">Sign In</Link>
             )}
-            {userInfo && userInfo.isAdmin  && (
-              <div className='dropdown'>
-                <Link to='#admin'>Admin{' '}<i className='fa fa-caret-down'></i></Link>
-                <ul className='dropdown-content'>
+            {userInfo && userInfo.isSeller && (
+              <div className="dropdown">
+                <Link to="#seller">
+                  Seller <i className="fa fa-caret-down"></i>
+                </Link>
+                <ul className="dropdown-content">
                   <li>
-                    <Link to='/dashboard'>Dashboard</Link>
+                    <Link to="/productlist/seller">Products</Link>
                   </li>
                   <li>
-                    <Link to='/productlist'>Products</Link>
+                    <Link to="/orderlist/seller">Orders</Link>
+                  </li>
+                </ul>
+              </div>
+            )}
+            {userInfo && userInfo.isAdmin && (
+              <div className="dropdown">
+                <Link to="#admin">
+                  Admin <i className="fa fa-caret-down"></i>
+                </Link>
+                <ul className="dropdown-content">
+                  <li>
+                    <Link to="/dashboard">Dashboard</Link>
                   </li>
                   <li>
-                    <Link to='/orderlist'>Orders</Link>
+                    <Link to="/productlist">Products</Link>
                   </li>
                   <li>
-                    <Link to='/userlist'>Users</Link>
+                    <Link to="/orderlist">Orders</Link>
+                  </li>
+                  <li>
+                    <Link to="/userlist">Users</Link>
                   </li>
                 </ul>
               </div>
@@ -107,10 +125,18 @@ function App() {
           <Route path="/order/:id" component={OrderScreen} />
           <Route path="/orderhistory" component={OrderHistoryScreen} />
           <PrivateRoute path="/profile" component={ProfileScreen} />
-          <AdminRoute path='/productlist' component={ProductListScreen} />
-          <AdminRoute path='/orderlist' component={OrderListScreen} />
-          <AdminRoute path='/userlist' component={UserListScreen} />
-          <AdminRoute path='/user/:id/edit' component={UserEditScreen} />
+          <AdminRoute path="/productlist" component={ProductListScreen} exact />
+          <AdminRoute path="/orderlist" component={OrderListScreen} exact/>
+          <AdminRoute path="/userlist" component={UserListScreen} />
+          <AdminRoute path="/user/:id/edit" component={UserEditScreen} />
+          <SellerRoute
+            path="/productlist/seller"
+            component={ProductListScreen}
+          ></SellerRoute>
+          <SellerRoute
+            path="/orderlist/seller"
+            component={OrderListScreen}
+          ></SellerRoute>
           <Route path="/" component={HomeScreen} exact />
         </main>
         <footer className="row center">All Rights Reserved.</footer>

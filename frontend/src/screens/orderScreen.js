@@ -39,6 +39,9 @@ const OrderScreen = (props) => {
       };
       document.body.appendChild(script);
     };
+    if (!userInfo) {
+      props.history.push('/');
+    }
     if (!order || successPay || successDeliver || (order && order._id !== orderId)) {
       dispatch({ type: ORDER_PAY_RESET})
       dispatch({ type: ORDER_DELIVER_RESET})
@@ -52,7 +55,7 @@ const OrderScreen = (props) => {
         }
       }
     }
-  }, [dispatch, order, orderId, sdkReady, successPay, successDeliver]);
+  }, [dispatch, order, orderId, sdkReady, successPay, successDeliver, userInfo, props.history]);
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(order, paymentResult))
@@ -187,7 +190,7 @@ const OrderScreen = (props) => {
                   )}
                 </li>
               )}
-              {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+              {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                 <li>
                 {loadingDeliver && <LoadingBox />}
                 {errorDeliver && <MessageBox variant='danger'>{errorDeliver}</MessageBox>}
